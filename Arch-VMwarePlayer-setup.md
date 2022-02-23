@@ -14,7 +14,7 @@ The Workstation Player download can be found at [www.vmware.com/.../workstation-
 
 ## Step 4: VM Hardware Setup
 1. Open VMWare Workstation Player and click 'Create New Virtual Machine.'
-2. Click on 'Installer disc image file (iso)' in the options, and enter the path to the ISO file you downloaded in [**Step 1: Download the disk image**](#step-1-download-the-disk-image), then click 'next.'
+2. Click on 'Installer disc image file (iso)' in the options, and enter the path to the ISO file you downloaded in [**Step 1**](#step-1-download-the-disk-image), then click 'next.'
 3. For the 'Guest operating system' select 'Linux,' and for the 'Version' select the appropriate version (as of this writing, select 'Other Linux 5.x kernel 64-bit'), then click 'next.'
 4. Name the VM whatever you want (something descriptive, like "Arch Linux 64" - you can change this later), select where you want the VM files to go, then click 'next.'
 5. Specify the disk capacity you need - in my case I will be using 20GB, but a minimum of 8GB is reccomended. Specify whether or not you want the disk in one file or multiple - a single file may offer better performance in some cases, but may cost portability. Click 'next.'
@@ -48,10 +48,28 @@ Run `lsblk` to get an idea of what is happening in the system. If everything loo
  
 The disk should be ready to partition. Read over the table to ensure everything is okay, then hit 'Write' and type `yes` to proceed. You can now quit the `cfdisk` partition tool. You can re-run `lsblk` to ensure the changes took effect.
 
-## Step 3: 
+## Step 3: Format the Partitions
+1. Run `lsblk` to view the drives. Under `sda` there should be 2 partitions (3 if you have swap space). Identify the one you set aside for the linux filesystem, this will be the largest and typically last one in the list, 'sda3' if you have swap space, or 'sda2' if you don't. Remember which one it is.
+2. Run `mkfs.ext4 /dev/<your filesystem partition>`, for me this is `/dev/sda3` to make an ext4 file system. If you don't have swap space, you can move on to the next step now.
+3. If you have swap space, run `mkswap /dev/<your swap partition>`, for me this is `/dev/sda2`.
+4. If you have swap space, run `swapon -a` to enable the swap space.
 
+## Step 4: Mount the Partitions
+1. Change your working directory to `/mnt` with `cd /mnt`.
+2. Mount the filesystem partition you found in [**Step 3.1**](#step-3-format-the-partitions) to your `/mnt` directory, with `mount /dev/<your filesystem partition> /mnt`, in my case this is `mount /dev/sda3 /mnt`. You can now go back to the home directory with `cd ~`.
 
+## Step 5: Install the Required Packages
+To install Arch, we need the following packages:
+1. [grub](https://archlinux.org/packages/core/x86_64/grub/): GNU GRand Unified Bootloader.
+2. [base](https://archlinux.org/packages/core/any/base/): Minimal package set to define a basic Arch Linux installation.
+3. [linux](https://archlinux.org/packages/core/x86_64/linux/): The Linux kernel and modules.
+4. [linux-firmware](https://archlinux.org/packages/core/any/linux-firmware/): Firmware files for Linux.
+5. [dhcpcd](https://archlinux.org/packages/core/x86_64/dhcpcd/): RFC2131 compliant DHCP client daemon.
+7. Your text editor of choice (such as [vi](https://archlinux.org/packages/core/x86_64/vi/)). I will be using [nano](https://archlinux.org/packages/core/x86_64/nano/).
 
+This can be done by running the command: `pacstrap /mnt grub base linux linux-firmware dhcpcd <your text editor>`
+
+## St
 
 <!--Footnotes-->
 

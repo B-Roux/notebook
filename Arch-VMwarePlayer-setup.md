@@ -69,7 +69,11 @@ To install Arch, we need the following packages:
 
 This can be done by running the command: `pacstrap /mnt grub base linux linux-firmware dhcpcd <your text editor>`
 
-## St
+## Step 6: Configuration
+1. run `genfstab /mnt >> /mnt/etc/fstab` to generate the fstab file for the system.
+2. (Optional) Run `cat /mnt/etc/fstab` to print the contents of our fstab file to ensure it is correct. If there are any errors, use the text editor we installed in [**step 5.7**](#step-5-install-the-required-packages) to fix them.
+3. Change the root directory to /mnt with `arch-chroot /mnt`.
+4. 
 
 <!--Footnotes-->
 

@@ -16,12 +16,43 @@ The Workstation Player download can be found at [www.vmware.com/.../workstation-
 1. Open VMWare Workstation Player and click 'Create New Virtual Machine.'
 2. Click on 'Installer disc image file (iso)' in the options, and enter the path to the ISO file you downloaded in [**Step 1: Download the disk image**](#step-1-download-the-disk-image), then click 'next.'
 3. For the 'Guest operating system' select 'Linux,' and for the 'Version' select the appropriate version (as of this writing, select 'Other Linux 5.x kernel 64-bit'), then click 'next.'
-4. Name the VM whatever you want (something descriptive, like "Arch Linux 64"), select where you want the VM files to go, then click 'next.'
+4. Name the VM whatever you want (something descriptive, like "Arch Linux 64" - you can change this later), select where you want the VM files to go, then click 'next.'
 5. Specify the disk capacity you need - in my case I will be using 20GB, but a minimum of 8GB is reccomended. Specify whether or not you want the disk in one file or multiple - a single file may offer better performance in some cases, but may cost portability. Click 'next.'
 6. Customize the hardware if you need to - in my case, I will be increasing the memory to 2048MB, and the core count to 2.
 7. If everything is to your liking, you can hit 'finish.'
 
 Success! The VM should now be ready to run. You can hit 'Play virtual machine' and proceed to the next part.
 
+# Part 2: Installing Arch
+
+## Step 1: Boot Up
+Click on 'Arch Linux install medium (x86_64, BIOS)' to boot into the installer. Alternatively, you can just wait and this will be done automatically. You should automaticaly be given the `root@archiso` user in the `~` (`/root`) directory.
+
+## Step 2: Partition the Disk
+Run `lsblk` to get an idea of what is happening in the system. If everything looks good, you can proceed to the partitioning steps:
+1. Run `cfdisk /dev/sda` to start the partitioner on the SDA device.
+2. Select the `gpt` label (for **G**UID **P**artition **T**able).
+3. We first need to create a partition for the boot loader:
+   1. Select 'New,' enter a size of '1M' (1 megabyte).
+   2. Select 'Type,' then select 'BIOS boot' from the menu.
+4. Create swap space (optional):
+   Creating swap space may not be necessary for you, depending on how much RAM you allocated in [**Part 1.4.6**](#step-4-vm-hardware-setup). There are lots of opinions about this, and I urge you to research them before you make a decision. To summarize, if you have very little memory (~1GB or less), definitely add swap space (at least double your RAM, minimum 2GB). If you have more, add swap space if you can spare the storage space. Since my VM has 20GB of storage and I plan on using very little of it, I will be allocating 4GB for swapping.
+   1. Move down to the 'Free space' row and select 'New.'
+   2. Enter the size (4G in my case) and hit 'Type'
+   3. Select 'Linux swap' from the menu
+5. Allocate the rest of the disk for the Linux Filesystem:
+   1. Move down to the 'Free space' row and select 'New.'
+   2. The prefilled value should be the remaining disk space (in my case, 16GB), hit enter.
+   3. If the type is not automatically filled as `Linux fulesystem' change it in the type menu
+   4. Ensure that there is no green 'Free Space' row
+ 
+The disk should be ready to partition. Read over the table to ensure everything is okay, then hit 'Write' and type `yes` to proceed. You can now quit the `cfdisk` partition tool. You can re-run `lsblk` to ensure the changes took effect.
+
+## Step 3: 
+
+
+
+
+<!--Footnotes-->
 
 [^vmware-legal-disclaimer]: This is not legal advice - you engage with 3rd party products at your own peril. I am not affiliated with VMWare in any way - this is a quote from the official website that is current as of 2022-02-23. Please review for yourself to ensure that this information is accurate and up to date - if it is not, please let me know!

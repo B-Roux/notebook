@@ -101,10 +101,13 @@ We need to edit the sudo configuration file to allow members of the 'wheel' grou
 For me, I want to use `nano` instead, so I will run `EDITOR=nano visudo` instead.
 
 In the sudo configuration file, scroll down to the line which reads
+
 ```
 # %wheel ALL=(ALL:ALL) ALL
 ```
+
 and remove the pound sign and space so that it reads
+
 ```
 %wheel ALL=(ALL:ALL) ALL
 ```
@@ -119,7 +122,8 @@ Save and exit.
 5. Log into the newly created user with the username and password we just created.
 6. Try using `sudo` with a command only 'root' can use: `sudo pacman -Syu`. You will be prompted for your used password (not the root password). If pacman attempts to update the system (it should already be up to date though), then everything is working just fine, and your user account now has sudo access! If not, make sure that you have uncommented the right line in the sudo config file, and that your new user is a part of the wheel group.
 
-
+## Step 5: Delete the Root Password
+Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root`. Please note that a deleted password and a blank password is **not** the same thing. A user
 
 <!--Footnotes-->
 

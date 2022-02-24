@@ -1,5 +1,7 @@
 \[Last updated 2022-02-23 - review all footnotes]
 
+Before beginning, review and famaliarize yourself with the [default Arch installation instructions](https://wiki.archlinux.org/title/installation_guide). Please be aware that I am making this guide as a personal cheat-sheet, and that you follow it completely AT YOUR OWN RISK. I make no guarantees - this is meant solely as for convenience and should not be used without consulting the official documentation for any technology or service.
+
 # Part 1: Getting the Virtual Machine Running
 The first step in the process is making and configuring the actual virtual hardware for our machine. Par 1 will cover this process.
 

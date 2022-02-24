@@ -74,8 +74,8 @@ Run `lsblk` to get an idea of what is happening in the system. If everything loo
 5. Allocate the rest of the disk for the Linux Filesystem:
    1. Move down to the 'Free space' row and select 'New.'
    2. The prefilled value should be the remaining disk space (in my case, 16GB), hit enter.
-   3. If the type is not automatically filled as `Linux fulesystem' change it in the type menu
-   4. Ensure that there is no green 'Free Space' row
+   3. If the type is not automatically filled as 'Linux filesystem' change it in the type menu.
+   4. Ensure that there is no green 'Free Space' row.
  
 The disk should be ready to partition. Read over the table to ensure everything is okay, then hit 'Write' and type `yes` to proceed. You can now quit the `cfdisk` partition tool. You can re-run `lsblk` to ensure the changes took effect.
 

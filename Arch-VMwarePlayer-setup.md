@@ -3,9 +3,9 @@
 # Part 1: Getting the Virtual Machine Running
 
 ## Step 1: Download the disk image
-Disk image files can be found at [archlinux.org/download](https://archlinux.org/download/). BitTorrent is reccomended, but you can also select an appropriate mirror for a direct download, among other options.
+Disk image files can be found at [archlinux.org/download](https://archlinux.org/download/). BitTorrent is recommended, but you can also select an appropriate mirror for a direct download, among other options.
 
-## Step 2 (optional, reccomended): Check the checksum
+## Step 2 (optional, recommended): Check the checksum
 The download page linked above has links to the appropriate hashes and checksums to ensure file integrity.
 
 ## Step 3: Download VMWare Workstation Player[^vmware-legal-disclaimer]
@@ -17,7 +17,7 @@ The Workstation Player download can be found at [www.vmware.com/.../workstation-
 2. Click on 'Installer disc image file (iso)' in the options, and enter the path to the ISO file you downloaded in [**Step 1**](#step-1-download-the-disk-image), then click 'next.'
 3. For the 'Guest operating system' select 'Linux,' and for the 'Version' select the appropriate version (as of this writing, select 'Other Linux 5.x kernel 64-bit'), then click 'next.'
 4. Name the VM whatever you want (something descriptive, like "Arch Linux 64" - you can change this later), select where you want the VM files to go, then click 'next.'
-5. Specify the disk capacity you need - in my case I will be using 20GB, but a minimum of 8GB is reccomended. Specify whether or not you want the disk in one file or multiple - a single file may offer better performance in some cases, but may cost portability. Click 'next.'
+5. Specify the disk capacity you need - in my case I will be using 20GB, but a minimum of 8GB is recommended. Specify whether or not you want the disk in one file or multiple - a single file may offer better performance in some cases, but may cost portability. Click 'next.'
 6. Customize the hardware if you need to - in my case, I will be increasing the memory to 2048MB, and the core count to 2.
 7. If everything is to your liking, you can hit 'finish.'
 
@@ -82,8 +82,11 @@ This can be done by running the command: `pacstrap /mnt grub base linux linux-fi
    4. Test your internet connection with `ping github.com`. You should start recieving back data. If this happens, you can stop the process by pressing ctrl+c. If this returns an error, you can try running `systemctl status dhcpcd` to see what's happening to the service. Try waiting 10 more seconds for it to start up, then try again. If this still leads to an error, check the network adapter in the VM settings and make sure it is both connected and set to connect at power-on.
 
 
-9. Reboot to make sure everything works: `exit` then `reboot`.
-10. Log back into 'root' with the password you made previously.
+## Step 7: Check if it Works
+Reboot to make sure everything works: `exit` then `reboot`, then log back into 'root' with the password you made previously. Try `ping github.com` to make sure the DCHP client daemon is running. Please refer to [**Step 6.7.4**](#step-6-configuration) if there are any errors. If everything works, congratulations! You've just installed Arch.
+
+# Part 3: Securing the System
+
 
 <!--Footnotes-->
 

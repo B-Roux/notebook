@@ -1,16 +1,40 @@
 # Arch Linix VMWare Workstation Player Setup
-
 \[Last updated 2022-02-24]
 
+## Table of Contents
+1. [Getting the Virtual Machine Running](#part-1-getting-the-virtual-machine-running)
+   1. Download the Disk Image
+   2. Check the Checksum
+   3. Download VMWare Workstation Player
+   4. VM Hardware Setup
+2. [Installing Arch](#part-2-installing-arch)
+   1. Boot Up
+   2. Partition the Disk
+   3. Format the Partitions
+   4. Mount the Partitions
+   5. Install the Required Packages
+   6. Configuration
+   7. Check if it Works
+3. [Housekeeping](#part-3-housekeeping)
+   1. Update and Upgrade
+   2. Install Sudo
+   3. Enable Wheel Sudo Access
+   4. Create a User Account
+   5. Delete and Lock the Root Password
+4. [Optional Steps](#part-4-optional)
+   - Change the Default Shell from BASH to Zsh
+   - Install and Enable the XFCE Desktop Environment
+
+## Foreword
 Before beginning, review and famaliarize yourself with the [default Arch installation instructions](https://wiki.archlinux.org/title/installation_guide). Please be aware that I am making this guide as a personal cheat-sheet, and that you follow it completely AT YOUR OWN RISK. I make no guarantees - this is meant solely as for convenience and should not be used without consulting the official documentation for any technology or service. If you do find any mistakes or issues, however, please let me know so I can fix them!
 
 ## Part 1: Getting the Virtual Machine Running
 The first step in the process is making and configuring the actual virtual hardware for our machine. Par 1 will cover this process.
 
-### Step 1: Download the disk image
+### Step 1: Download the Disk Image
 Disk image files can be found at [archlinux.org/download](https://archlinux.org/download/). BitTorrent is recommended, but you can also select an appropriate mirror for a direct download, among other options.
 
-### Step 2 (optional, recommended): Check the checksum
+### Step 2 (optional, recommended): Check the Checksum
 The download page linked above has links to the appropriate hashes and checksums to ensure file integrity.
 
 ### Step 3: Download VMWare Workstation Player[^vmware-legal-disclaimer]
@@ -140,12 +164,13 @@ The virtual machine should now be ready to use!
 ## Part 4: Optional
 While the system is ready to use, I usually change a few things and add a few features before using it.
    
-### Change the default shell from BASH to [Zsh](https://wiki.archlinux.org/title/zsh)
+### Change the Default Shell from BASH to [Zsh](https://wiki.archlinux.org/title/zsh)
 1. Install the Zsh package: `sudo pacman -S zsh`
 2. Run the `zsh` command to initiate Zshell. You will automatically be presented with a new user configuration manu - run through these options as you see fit.
-3. Change the default shell to Zsh with `chsh -s /bin/zsh`
+3. Change the default shell to Zsh with `chsh -s /bin/zsh`[^chsh-list-shells]
 4. Reboot.
 5. Log into your user account and enter `echo $SHELL` to see what shell your user is running. You should see `/bin/zsh`.
+[^chsh-list-shells]: You can run `chsh -l` to view a list of all installed shells.
    
 Success! Zsh is now your default shell.
    

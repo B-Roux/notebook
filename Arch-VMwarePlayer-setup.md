@@ -136,10 +136,18 @@ While the system is ready to use, I usually change a few things and add a few fe
 1. Install the Zsh package: `sudo pacman -S zsh`
 2. Run the `zsh` command to initiate Zshell. You will automatically be presented with a new user configuration manu - run through these options as you see fit.
 3. Change the default shell to Zsh with `chsh -s /bin/zsh`
-4. Reboot with `sudo reboot`
+4. Reboot.
 5. Log into your user account and enter `echo $SHELL` to see what shell your user is running. You should see `/bin/zsh`.
    
 Success! Zsh is now your default shell.
+   
+## Install and Enable the XFCE Desktop Environment
+XFCE is a great customizable lightweight desktop environment that is reasonably light on system resources, while being a fully-functional graphical desktop environment. Being lightweight on system resources is important, as virtual machines often run considerably less efficiently than bare-metal machines, making more expensive environments like KDE or Gnome less desireable on less powerful host computers.
+1. Install the packages you need to start up XFCE: `sudo pacman -S xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter` and go though the installation process. Feel free to use the default settings.
+2. Set 'lightdm' to start automatically on boot: `sudo systemctl enable lightdm`.
+3. Reboot.
+   
+You should now boot directly into the XFCE graphical interface!
 
 <!--Footnotes-->
 

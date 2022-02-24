@@ -73,7 +73,17 @@ This can be done by running the command: `pacstrap /mnt grub base linux linux-fi
 1. run `genfstab /mnt >> /mnt/etc/fstab` to generate the fstab file for the system.
 2. (Optional) Run `cat /mnt/etc/fstab` to print the contents of our fstab file to ensure it is correct. If there are any errors, use the text editor we installed in [**step 5.7**](#step-5-install-the-required-packages) to fix them.
 3. Change the root directory to /mnt with `arch-chroot /mnt`.
-4. 
+4. Set a password for the root user with `passwd`. This doesn't have to be anything secure since we will be handling system security in an upcoming part.
+5. Install the bootloader to `/dev/sda` with `grub-install /dev/sda` (do not install to `/dev/sda1`, `2`, or `3`. just `/dev/sda`.
+6. Make the grub configuration file with `grub-mkconfig -o /boot/grub/grub.cfg`.
+7. We are almost done, but we need to enable internet access:
+   1. Use the system control utility to automatically start our DHCP client daemon whenever the system starts with `systemctl --now enable dhcpcd`.
+   3. Count to 10 (using "one-one-tousand, two-one-thousand, ...").
+   4. Test your internet connection with `ping github.com`. You should start recieving back data. If this happens, you can stop the process by pressing ctrl+c. If this returns an error, you can try running `systemctl status dhcpcd` to see what's happening to the service. Try waiting 10 more seconds for it to start up, then try again. If this still leads to an error, check the network adapter in the VM settings and make sure it is both connected and set to connect at power-on.
+
+
+9. Reboot to make sure everything works: `exit` then `reboot`.
+10. Log back into 'root' with the password you made previously.
 
 <!--Footnotes-->
 

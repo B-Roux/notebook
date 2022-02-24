@@ -123,7 +123,21 @@ Save and exit.
 6. Try using `sudo` with a command only 'root' can use: `sudo pacman -Syu`. You will be prompted for your used password (not the root password). If pacman attempts to update the system (it should already be up to date though), then everything is working just fine, and your user account now has sudo access! If not, make sure that you have uncommented the right line in the sudo config file, and that your new user is a part of the wheel group.
 
 ## Step 5: Delete the Root Password
-Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root`. Please note that a deleted password and a blank password is **not** the same thing. A user
+Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root`. Please note that a deleted password and a blank password is **not** the same thing. A user with a blank password can be logged into with a blank password, while a user with a deleted password cannot be logged into at all. If you ever need access to root again, you can re-add a password with `sudo passwd root` from any account within the 'wheel' group.
+   
+The virtual machine should now be ready to use!
+   
+# Part 4: Optional
+While the system is ready to use, I usually change a few things and add a few features before using it.
+   
+## Change the default shell from BASH to [Zsh](https://wiki.archlinux.org/title/zsh)
+1. Install the Zsh package: `sudo pacman -S zsh`
+2. Run the `zsh` command to initiate Zshell. You will automatically be presented with a new user configuration manu - run through these options as you see fit.
+3. Change the default shell to Zsh with `chsh -s /bin/zsh`
+4. Reboot with `sudo reboot`
+5. Log into your user account and enter `echo $SHELL` to see what shell your user is running. You should see `/bin/zsh`.
+   
+Success! Zsh is now your default shell.
 
 <!--Footnotes-->
 

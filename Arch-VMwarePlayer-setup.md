@@ -124,8 +124,8 @@ Save and exit.
 5. Log into the newly created user with the username and password we just created.
 6. Try using `sudo` with a command only 'root' can use: `sudo pacman -Syu`. You will be prompted for your used password (not the root password). If pacman attempts to update the system (it should already be up to date though), then everything is working just fine, and your user account now has sudo access! If not, make sure that you have uncommented the right line in the sudo config file, and that your new user is a part of the wheel group.
 
-## Step 5: Delete the Root Password
-Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root`. Please note that a deleted password and a blank password is **not** the same thing. A user with a blank password can be logged into with a blank password, while a user with a deleted password cannot be logged into at all. If you ever need access to root again, you can re-add a password with `sudo passwd root` from any account within the 'wheel' group.
+## Step 5: Delete and Lock the Root Password
+Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root` and lock the password with `sudo passwd -l root`. If you ever need access to root again, you can unlock the root account with the passwd utility, then log in. Be advised that since we deleted the old temporary password, unlocking the root account means that anyone can log into it without a password. If you need the root account unlocked, give it a secure password with `sudo passwd root` again.
    
 The virtual machine should now be ready to use!
    

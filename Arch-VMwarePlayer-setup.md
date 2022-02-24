@@ -1,6 +1,7 @@
 \[Last updated 2022-02-23 - review all footnotes]
 
 # Part 1: Getting the Virtual Machine Running
+The first step in the process is making and configuring the actual virtual hardware for our machine. Par 1 will cover this process.
 
 ## Step 1: Download the disk image
 Disk image files can be found at [archlinux.org/download](https://archlinux.org/download/). BitTorrent is recommended, but you can also select an appropriate mirror for a direct download, among other options.
@@ -24,6 +25,7 @@ The Workstation Player download can be found at [www.vmware.com/.../workstation-
 Success! The VM should now be ready to run. You can hit 'Play virtual machine' and proceed to the next part.
 
 # Part 2: Installing Arch
+We have our virtual hardware set up, now we need to install and configure Arch so that we can boot into and use it.
 
 ## Step 1: Boot Up
 Click on 'Arch Linux install medium (x86_64, BIOS)' to boot into the installer. Alternatively, you can just wait and this will be done automatically. You should automaticaly be given the `root@archiso` user in the `~` (`/root`) directory.
@@ -71,7 +73,7 @@ This can be done by running the command: `pacstrap /mnt grub base linux linux-fi
 
 ## Step 6: Configuration
 1. run `genfstab /mnt >> /mnt/etc/fstab` to generate the fstab file for the system.
-2. (Optional) Run `cat /mnt/etc/fstab` to print the contents of our fstab file to ensure it is correct. If there are any errors, use the text editor we installed in [**step 5.7**](#step-5-install-the-required-packages) to fix them.
+2. (Optional) Run `cat /mnt/etc/fstab` to print the contents of our fstab file to ensure it is correct. If there are any errors, use the text editor we installed in [**Step 5.7**](#step-5-install-the-required-packages) to fix them.
 3. Change the root directory to /mnt with `arch-chroot /mnt`.
 4. Set a password for the root user with `passwd`. This doesn't have to be anything secure since we will be handling system security in an upcoming part.
 5. Install the bootloader to `/dev/sda` with `grub-install /dev/sda` (do not install to `/dev/sda1`, `2`, or `3`. just `/dev/sda`.
@@ -85,7 +87,38 @@ This can be done by running the command: `pacstrap /mnt grub base linux linux-fi
 ## Step 7: Check if it Works
 Reboot to make sure everything works: `exit` then `reboot`, then log back into 'root' with the password you made previously. Try `ping github.com` to make sure the DCHP client daemon is running. Please refer to [**Step 6.7.4**](#step-6-configuration) if there are any errors. If everything works, congratulations! You've just installed Arch.
 
-# Part 3: Securing the System
+# Part 3: Housekeeping
+While we may have Arch working now, it's not secure. We only have one user - root - who is allowed to do anything on the system. This poses a major security risk - what we typically want to do is create a user account that is not root, but has access to root priveleges on an as-needed basis.
+
+## Step 1: Update and Upgrade
+Run the `pacman -Syu` command to refresh the package database (`y`), upgrade the system (`u`), and sync packages (`-S`).
+
+## Step 2: Install Sudo
+The '[sudo](https://archlinux.org/packages/core/x86_64/sudo/)' package is a necessity for all nontrivial linux machines. It stands for "super user do" and allows non-root users that have been given permission to operate with root privileges. Install this package with `pacman -S sudo`.
+
+## Step 3: Enable Wheel Sudo Access
+We need to edit the sudo configuration file to allow members of the 'wheel' group to use `sudo`. **Never directly edit this file!** Use the `visudo` command to edit it instead. This will enable syntax checking and error reporting before posting any changes to the sudo config file, as any errors might make the system unusable. The default editor for visudo, as the name implies, is vi. If you like using vi (and have in installed), you can simply enter `visudo` to edit the config file. 
+For me, I want to use `nano` instead, so I will run `EDITOR=nano visudo` instead.
+
+In the sudo configuration file, scroll down to the line which reads
+```
+# %wheel ALL=(ALL:ALL) ALL
+```
+and remove the pound sign and space so that it reads
+```
+%wheel ALL=(ALL:ALL) ALL
+```
+
+Save and exit.
+
+## Step 4: Create a User Account
+1. Add a new user to the system with `useradd -m <username>` where '<username>' is the desired username you want for the new user. The `-m` option creates a home direcory for the user.
+2. Set a password for the new user with `passwd <username>`. You will be prompted for the new password - this one needs to be secure! Don't know what a secure password should look like? Many services like Google and GitHub have requirements and best practices guides on picking a good password for their services. Look them up to ensure that you are on the right path.
+3. Add the new user to the wheel group with `usermod -a -G wheel <username>`, where `-a` signifies that we are appending the user to a group, `-G wheel` signifies the wheel group, and '<username>' refers to our user.
+4. Log out of the root account with `exit`.
+5. Log into the newly created user with the username and password we just created.
+6. Try using `sudo` with a command only 'root' can use: `sudo pacman -Syu`. You will be prompted for your used password (not the root password). If pacman attempts to update the system (it should already be up to date though), then everything is working just fine, and your user account now has sudo access! If not, make sure that you have uncommented the right line in the sudo config file, and that your new user is a part of the wheel group.
+
 
 
 <!--Footnotes-->

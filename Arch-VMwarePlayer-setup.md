@@ -1,6 +1,6 @@
-\[Last updated 2022-02-23 - review all footnotes]
+\[Last updated 2022-02-24]
 
-Before beginning, review and famaliarize yourself with the [default Arch installation instructions](https://wiki.archlinux.org/title/installation_guide). Please be aware that I am making this guide as a personal cheat-sheet, and that you follow it completely AT YOUR OWN RISK. I make no guarantees - this is meant solely as for convenience and should not be used without consulting the official documentation for any technology or service.
+Before beginning, review and famaliarize yourself with the [default Arch installation instructions](https://wiki.archlinux.org/title/installation_guide). Please be aware that I am making this guide as a personal cheat-sheet, and that you follow it completely AT YOUR OWN RISK. I make no guarantees - this is meant solely as for convenience and should not be used without consulting the official documentation for any technology or service. If you do find any mistakes or issues, however, please let me know so I can fix them!
 
 # Part 1: Getting the Virtual Machine Running
 The first step in the process is making and configuring the actual virtual hardware for our machine. Par 1 will cover this process.
@@ -14,6 +14,7 @@ The download page linked above has links to the appropriate hashes and checksums
 ## Step 3: Download VMWare Workstation Player[^vmware-legal-disclaimer]
 The Workstation Player download can be found at [www.vmware.com/.../workstation-player-evaluation.html](https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html). Be advised:
 > VMware Workstation Player is free for personal, non-commercial use (business and nonprofit use is considered commercial use). If you would like to learn about virtual machines or use them at home, you are welcome to use VMware Workstation Player for free. Students and faculty of accredited educational institutions can use VMware Workstation Player for free if they are members of the [VMware Academic Program](https://labs.vmware.com/academic/licensing-overview).
+[^vmware-legal-disclaimer]: This is not legal advice - you engage with 3rd party products at your own peril. I am not affiliated with VMWare in any way - this is a quote from the official website that is current as of 2022-02-23. Please review for yourself to ensure that this information is accurate and up to date!
 
 ## Step 4: VM Hardware Setup
 1. Open VMWare Workstation Player and click 'Create New Virtual Machine.'
@@ -59,8 +60,7 @@ The disk should be ready to partition. Read over the table to ensure everything 
 4. If you have swap space, run `swapon -a` to enable the swap space.
 
 ## Step 4: Mount the Partitions
-1. Change your working directory to `/mnt` with `cd /mnt`.
-2. Mount the filesystem partition you found in [**Step 3.1**](#step-3-format-the-partitions) to your `/mnt` directory, with `mount /dev/<your filesystem partition> /mnt`, in my case this is `mount /dev/sda3 /mnt`. You can now go back to the home directory with `cd ~`.
+Mount the filesystem partition you found in [**Step 3.1**](#step-3-format-the-partitions) to your `/mnt` directory, with `mount /dev/<your filesystem partition> /mnt`, in my case this is `mount /dev/sda3 /mnt`.
 
 ## Step 5: Install the Required Packages
 To install Arch, we need the following packages:
@@ -69,21 +69,25 @@ To install Arch, we need the following packages:
 3. [linux](https://archlinux.org/packages/core/x86_64/linux/): The Linux kernel and modules.
 4. [linux-firmware](https://archlinux.org/packages/core/any/linux-firmware/): Firmware files for Linux.
 5. [dhcpcd](https://archlinux.org/packages/core/x86_64/dhcpcd/): RFC2131 compliant DHCP client daemon.
-7. Your text editor of choice (such as [vi](https://archlinux.org/packages/core/x86_64/vi/)). I will be using [nano](https://archlinux.org/packages/core/x86_64/nano/).
+7. Your text editor of choice (such as [vi](https://archlinux.org/packages/core/x86_64/vi/)). I will be using [nano](https://archlinux.org/packages/core/x86_64/nano/)[^vi-vs-nano].
+[^vi-vs-nano]: Picking a text editor requires some soul searching. In most cases, it is highly recommended to install vi even if you prefer to use another option like nano, because many users and even some software assumes that you have it (it is *almost* guaranteed to be installed on most UNIX systems).
 
-This can be done by running the command: `pacstrap /mnt grub base linux linux-firmware dhcpcd <your text editor>`
+This can be done by running the command: `pacstrap /mnt grub base linux linux-firmware dhcpcd <your text editor(s)>`
 
 ## Step 6: Configuration
 1. run `genfstab /mnt >> /mnt/etc/fstab` to generate the fstab file for the system.
 2. (Optional) Run `cat /mnt/etc/fstab` to print the contents of our fstab file to ensure it is correct. If there are any errors, use the text editor we installed in [**Step 5.7**](#step-5-install-the-required-packages) to fix them.
 3. Change the root directory to /mnt with `arch-chroot /mnt`.
 4. Set a password for the root user with `passwd`. This doesn't have to be anything secure since we will be handling system security in an upcoming part.
-5. Install the bootloader to `/dev/sda` with `grub-install /dev/sda` (do not install to `/dev/sda1`, `2`, or `3`. just `/dev/sda`.
-6. Make the grub configuration file with `grub-mkconfig -o /boot/grub/grub.cfg`.
+5. Install the bootloader to `/dev/sda` with `grub-install /dev/sda`[^not-sda-partition].
+6. Make the grub configuration file with `grub-mkconfig -o /boot/grub/grub.cfg`[^grub-mkconfig-o-option].
 7. We are almost done, but we need to enable internet access:
-   1. Use the system control utility to automatically start our DHCP client daemon whenever the system starts with `systemctl --now enable dhcpcd`.
+   1. Use the system control utility to automatically start our DHCP client daemon whenever the system starts with `systemctl --now enable dhcpcd`[^systemctl-now-option].
    3. Count to 10 (using "one-one-tousand, two-one-thousand, ...").
    4. Test your internet connection with `ping github.com`. You should start recieving back data. If this happens, you can stop the process by pressing ctrl+c. If this returns an error, you can try running `systemctl status dhcpcd` to see what's happening to the service. Try waiting 10 more seconds for it to start up, then try again. If this still leads to an error, check the network adapter in the VM settings and make sure it is both connected and set to connect at power-on.
+[^not-sda-partition]: Note that we are installing grub to the SDA device, **not** any individual SDA partition (eg. 'sda1' or 'sda2').
+[^grub-mkconfig-o-option]: The `-o` option allows us to specify the output file.
+[^systemctl-now-option]: The `--now` option both enabled and starts the service.
 
 
 ## Step 7: Check if it Works
@@ -93,7 +97,8 @@ Reboot to make sure everything works: `exit` then `reboot`, then log back into '
 While we may have Arch working now, it's not secure. We only have one user - root - who is allowed to do anything on the system. This poses a major security risk - what we typically want to do is create a user account that is not root, but has access to root priveleges on an as-needed basis.
 
 ## Step 1: Update and Upgrade
-Run the `pacman -Syu` command to refresh the package database (`y`), upgrade the system (`u`), and sync packages (`-S`).
+Run the `pacman -Syu` command to refresh the package database (`y`), upgrade the system (`u`), and sync packages (`-S`)[^when-to-update].
+[^when-to-update]: It is reccomended you run this command regularly to update your system, however you **must check the official [news feed](https://archlinux.org/news/) to ensure that updating won't break any part of your system.** This process is inherent to the Arch Linux distribution.
 
 ## Step 2: Install Sudo
 The '[sudo](https://archlinux.org/packages/core/x86_64/sudo/)' package is a necessity for all nontrivial linux machines. It stands for "super user do" and allows non-root users that have been given permission to operate with root privileges. Install this package with `pacman -S sudo`.
@@ -117,12 +122,13 @@ and remove the pound sign and space so that it reads
 Save and exit.
 
 ## Step 4: Create a User Account
-1. Add a new user to the system with `useradd -m <username>` where '<username>' is the desired username you want for the new user. The `-m` option creates a home direcory for the user.
+1. Add a new user to the system with `useradd -m <username>` where '<username>' is the desired username you want for the new user[^useradd-m-option].
 2. Set a password for the new user with `passwd <username>`. You will be prompted for the new password - this one needs to be secure! Don't know what a secure password should look like? Many services like Google and GitHub have requirements and best practices guides on picking a good password for their services. Look them up to ensure that you are on the right path.
 3. Add the new user to the wheel group with `usermod -a -G wheel <username>`, where `-a` signifies that we are appending the user to a group, `-G wheel` signifies the wheel group, and '<username>' refers to our user.
 4. Log out of the root account with `exit`.
 5. Log into the newly created user with the username and password we just created.
 6. Try using `sudo` with a command only 'root' can use: `sudo pacman -Syu`. You will be prompted for your used password (not the root password). If pacman attempts to update the system (it should already be up to date though), then everything is working just fine, and your user account now has sudo access! If not, make sure that you have uncommented the right line in the sudo config file, and that your new user is a part of the wheel group.
+[^useradd-m-option]: The `-m` option specifies that we want the utility to create a home directory for the new user.
 
 ## Step 5: Delete and Lock the Root Password
 Since our new user now has access to root privileges with `sudo`, the root account is no longer needed and should generally not be used anymore. You can delete the root password with `sudo passwd -d root` and lock the password with `sudo passwd -l root`. If you ever need access to root again, you can unlock the root account with the passwd utility, then log in. **Be advised that since we deleted the old temporary password, unlocking the root account means that anyone can log into it without a password. If you need the root account unlocked, give it a secure password with `sudo passwd root` again.**
@@ -148,7 +154,3 @@ XFCE is a great customizable lightweight desktop environment that is reasonably 
 3. Reboot.
    
 You should now boot directly into the XFCE graphical interface!
-
-<!--Footnotes-->
-
-[^vmware-legal-disclaimer]: This is not legal advice - you engage with 3rd party products at your own peril. I am not affiliated with VMWare in any way - this is a quote from the official website that is current as of 2022-02-23. Please review for yourself to ensure that this information is accurate and up to date - if it is not, please let me know!

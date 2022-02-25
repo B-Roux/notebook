@@ -1,0 +1,7 @@
+# Potentially useful unicode characters
+# ┌─┐
+# │
+# └┘
+# ✓✔
+# ✗✘
+# ✕✖

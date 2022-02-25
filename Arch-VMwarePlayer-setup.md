@@ -24,6 +24,7 @@
 4. [Optional Steps](#part-4-optional)
    - Change the Default Shell from BASH to Zsh
    - Install and Enable the XFCE Desktop Environment
+   - Change the Default Prompt and Terminal Style
 
 ## Foreword
 Before beginning, review and famaliarize yourself with the [default Arch installation instructions](https://wiki.archlinux.org/title/installation_guide). Please be aware that I am making this guide as a personal cheat-sheet, and that you follow it completely AT YOUR OWN RISK. I make no guarantees - this is meant solely as for convenience and should not be used without consulting the official documentation for any technology or service. If you do find any mistakes or issues, however, please let me know so I can fix them!

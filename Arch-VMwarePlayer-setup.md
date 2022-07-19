@@ -187,14 +187,14 @@ You should now boot directly into the XFCE graphical interface!
 I often feel like the default Zsh prompt and style doesn't give me enough information. Feel free to make your prompt as detailed or minimalistic as you prefer, but the provided example will change it to my personal preferences.
 Using your text editor, edit the `~/.zshrc` file to change the prompt by assigning the format to the `PROMPT` variable. For formatting help [see this page](https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html). 
 ```
-PROMPT=$'%(?..[%F{red}%?%f]\n)\n[%n@%M]-[%~]\n[%#]: '
+PROMPT=$'%(?..[Error: %F{red}%?%f]\n)\n┌[%n@%M: %~]\n└[%#]: '
 ```
 This will create a prompt that looks like this:
 ```console
 [127]
-   
-[roux@archlinux]-[~]
-[%]: my-command --here
+
+┌[roux@archlinux: ~]
+└[%]:
 ```
 (Note that the first line prints the exit code if there was an error, if there is no error the line is not printed.)
    
